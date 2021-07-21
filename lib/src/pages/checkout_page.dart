@@ -12,7 +12,10 @@ class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Carrinho')),
+      appBar: AppBar(
+      title: Text('Carrinho'),
+      backgroundColor: Colors.white30,
+      ),
       body: StreamBuilder(
         stream: bloc.getStream,
         initialData: bloc.allItems,
@@ -21,13 +24,16 @@ class _CheckoutState extends State<Checkout> {
           ? Column(
             children: [
               Expanded(child: checkoutListBuilder(snapshot)),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Checkout"),
-                // style: TextButton.styleFrom(
-                //   primary: Theme.of(context).primaryColor,
-                  
-                // )
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24.0),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Checkout"),
+                  // style: TextButton.styleFrom(
+                  //   primary: Theme.of(context).primaryColor,
+                    
+                  // )
+                ),
               ),
             ],
           ) :      
@@ -39,22 +45,25 @@ class _CheckoutState extends State<Checkout> {
 }
 
     Widget checkoutListBuilder(snapshot) {
-  return ListView.builder(
-    itemCount: snapshot.data["cart items"].length,
-    itemBuilder: (BuildContext context, i) {
-      final cartList = snapshot.data["cart items"];
-      return ListTile(
-        title: Text(cartList[i]['name']),
-        subtitle: Text("\$${cartList[i]['price']}"),
-        trailing: IconButton(
-          icon: Icon(Icons.remove_shopping_cart),
-          onPressed: () {
-            bloc.removeFromCart(cartList[i]);
-          },
-        ),
-        onTap: () {},
-      );
-    },
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: ListView.builder(
+      itemCount: snapshot.data["cart items"].length,
+      itemBuilder: (BuildContext context, i) {
+        final cartList = snapshot.data["cart items"];
+        return ListTile(
+          title: Text(cartList[i]['name']),
+          subtitle: Text("\$${cartList[i]['price']}"),
+          trailing: IconButton(
+            icon: Icon(Icons.remove_shopping_cart),
+            onPressed: () {
+              bloc.removeFromCart(cartList[i]);
+            },
+          ),
+          onTap: () {},
+        );
+      },
+    ),
   );
 }
 
