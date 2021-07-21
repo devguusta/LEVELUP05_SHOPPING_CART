@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        
         actions: [
           IconButton(
             onPressed: (){
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
             },
             icon: Icon(Icons.shopping_bag_outlined),
           ),
+        
         ],
       ),
       body: ShopItemsWidget(),

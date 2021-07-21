@@ -1,3 +1,4 @@
+import 'package:cart/src/bloc/cart_item_block.dart';
 import 'package:flutter/material.dart';
 
 class Checkout extends StatefulWidget {
@@ -10,8 +11,50 @@ class Checkout extends StatefulWidget {
 class _CheckoutState extends State<Checkout> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: AppBar(title: Text('Carrinho')),
+      body: StreamBuilder(
+        stream: bloc.getStream,
+        initialData: bloc.allItems,
+        builder: (context,snapshot) {
+          return (snapshot.data as Map)['cart items'].length > 0
+          ? Column(
+            children: [
+              Expanded(child: checkoutListBuilder(snapshot)),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text("Checkout"),
+                // style: TextButton.styleFrom(
+                //   primary: Theme.of(context).primaryColor,
+                  
+                // )
+              ),
+            ],
+          ) :      
+          Center(child: Text("You haven´t taken any item yey"));
+        },
+      ),
     );
   }
 }
+
+    Widget checkoutListBuilder(snapshot) {
+  return ListView.builder(
+    itemCount: snapshot.data["cart items"].length,
+    itemBuilder: (BuildContext context, i) {
+      final cartList = snapshot.data["cart items"];
+      return ListTile(
+        title: Text(cartList[i]['name']),
+        subtitle: Text("\$${cartList[i]['price']}"),
+        trailing: IconButton(
+          icon: Icon(Icons.remove_shopping_cart),
+          onPressed: () {
+            bloc.removeFromCart(cartList[i]);
+          },
+        ),
+        onTap: () {},
+      );
+    },
+  );
+}
+
